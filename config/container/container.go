@@ -33,6 +33,7 @@ type Services struct {
 type Controllers struct {
 	AuthController controllers.AuthController
 	UserController controllers.UserController
+	TaskController controllers.TaskController
 }
 
 func New(conf config.Configuration) Container {
@@ -49,6 +50,7 @@ func New(conf config.Configuration) Container {
 
 	authController := controllers.NewAuthController(authService, userService)
 	userController := controllers.NewUserController(userService, authService)
+	taskController := controllers.NewTaskController(taskService)
 
 	authMiddleware := middlewares.AuthMiddleware(tknAuth, authService, userService)
 
@@ -64,6 +66,7 @@ func New(conf config.Configuration) Container {
 		Controllers: Controllers{
 			authController,
 			userController,
+			taskController,
 		},
 	}
 }
