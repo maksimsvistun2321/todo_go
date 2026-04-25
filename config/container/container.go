@@ -27,6 +27,7 @@ type Middlewares struct {
 type Services struct {
 	app.AuthService
 	app.UserService
+	app.TaskService
 }
 
 type Controllers struct {
@@ -44,6 +45,7 @@ func New(conf config.Configuration) Container {
 
 	userService := app.NewUserService(userRepository)
 	authService := app.NewAuthService(sessionRepository, userRepository, tknAuth, conf.JwtTTL)
+	taskService := app.NewTaskService(taskRepository)
 
 	authController := controllers.NewAuthController(authService, userService)
 	userController := controllers.NewUserController(userService, authService)
@@ -57,6 +59,7 @@ func New(conf config.Configuration) Container {
 		Services: Services{
 			authService,
 			userService,
+			taskService,
 		},
 		Controllers: Controllers{
 			authController,
