@@ -1,6 +1,9 @@
 package container
 
 import (
+	"log"
+	"net/http"
+
 	"github.com/BohdanBoriak/boilerplate-go-back/config"
 	"github.com/BohdanBoriak/boilerplate-go-back/internal/app"
 	"github.com/BohdanBoriak/boilerplate-go-back/internal/infra/database"
@@ -9,8 +12,6 @@ import (
 	"github.com/go-chi/jwtauth/v5"
 	"github.com/upper/db/v4"
 	"github.com/upper/db/v4/adapter/postgresql"
-	"log"
-	"net/http"
 )
 
 type Container struct {
@@ -39,6 +40,7 @@ func New(conf config.Configuration) Container {
 
 	sessionRepository := database.NewSessRepository(sess)
 	userRepository := database.NewUserRepository(sess)
+	taskRepository := database.NewTaskRepository(sess)
 
 	userService := app.NewUserService(userRepository)
 	authService := app.NewAuthService(sessionRepository, userRepository, tknAuth, conf.JwtTTL)
