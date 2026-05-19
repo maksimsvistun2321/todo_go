@@ -67,9 +67,9 @@ func (s taskService) Update(t domain.Task) (domain.Task, error) {
 }
 
 func (s taskService) UpdateStatus(task domain.Task) (domain.Task, error) {
-	task, err := s.taskRepo.Update(task)
+	task, err := s.taskRepo.UpdateStatus(task)
 	if err != nil {
-		log.Printf("taskService.UpdateStatus(s.taskRepo.Update): %s", err)
+		log.Printf("taskService.UpdateStatus(s.taskRepo.UpdateStatus): %s", err)
 		return domain.Task{}, err
 	}
 

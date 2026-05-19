@@ -108,15 +108,20 @@ func (r taskRepository) Update(t domain.Task) (domain.Task, error) {
 	return t, nil
 }
 
-func (r taskRepository) UpdateStatus(task domain.Task) (domain.Task, error) {
-	model := r.mapDomainToModel(task)
+func (r taskRepository) UpdateStatus(t domain.Task) (domain.Task, error) {
+	err := r.coll.Find(db.Cond{
+		"id":           t.Id,
+		"deleted_date": nil,
+	}).Update(map[string]interface{}{
+		"status":       t.Status,
+		"updated_date": time.Now(),
+	})
 
-	err := r.coll.UpdateReturning(&model)
 	if err != nil {
 		return domain.Task{}, err
 	}
 
-	return r.mapModelToDomain(model), nil
+	return r.Find(t.Id)
 }
 
 func (r taskRepository) Delete(id uint64) error {
